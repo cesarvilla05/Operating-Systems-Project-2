@@ -20,8 +20,6 @@ numberOfPages = 100
 #Creating random variables for the array
 class StringArray():
     global randNumString
-    global frameNum
-
 
     def run(self):
 
@@ -32,13 +30,13 @@ class StringArray():
 
 class fifoMethod():
     global randNumString
-    global frameNum
-
+    global cycles
+    
     def run(self):
 
-        
+        print(randNumString)
+        print('\n')
         pageFaults = []*30  #keep track of all page faults in 30 cycles
-        
         q = queue.Queue()
 
         for i in range(cycles):                 #we are running each method 30 times
@@ -66,79 +64,78 @@ class fifoMethod():
                     found = True
                                 
             pageFaults.append(self.fifoPageFault)    
-            print("\n")
-            print('cycle', i + 1)
-        print('FIFO Page faults', pageFaults)
+            
+
+        print('FIFO Page faults')
+        print(pageFaults)
 ####################################################################################################################
 ###############################################OPTIMAL###############################################
 # Optimal Page Replacement Algorithm
-# def __optimal():
-#     global a, n, m
-#     x = 0
-#     page_faults = 0
-#     page = []
-#     FREE = -1
-#     for i in range(m):
-#         page.append(FREE)
-#
-#     for i in range(n):
-#         flag = 0
-#         for j in range(m):
-#             if (page[j] == a[i]):
-#                 flag = 1
-#                 break
-#
-#         if flag == 0:
-#             # look for an empty one
-#             faulted = False
-#             new_slot = FREE
-#             for q in range(m):
-#                 if page[q] == FREE:
-#                     faulted = True
-#                     new_slot = q
-#
-#             if not faulted:
-#                 # find next use farthest in future
-#                 max_future = 0
-#                 max_future_q = FREE
-#                 for q in range(m):
-#                     if page[q] != FREE:
-#                         found = False
-#                         for ii in range(i, n):
-#                             if a[ii] == page[q]:
-#                                 found = True
-#                                 if ii > max_future:
-#                                     # print "\n\tFound what will be used last: a[%d] = %d" % (ii, a[ii]),
-#                                     max_future = ii
-#                                     max_future_q = q
-#
-#                                 break
-#
-#                         if not found:
-#                             # print "\n\t%d isn't used again." % (page[q]),
-#                             max_future_q = q
-#                             break
-#
-#                 faulted = True
-#                 new_slot = max_future_q
-#
-#             page_faults += 1
-#             page[new_slot] = a[i]
-#             print
-#             "\n%d ->" % (a[i]),
-#             for j in range(m):
-#                 if page[j] != FREE:
-#                     print
-#                     page[j],
-#                 else:
-#                     print
-#                     "-",
-#         else:
-#             print
-#             "\n%d -> No Page Fault" % (a[i]),
-#
-#     print
-#     "\n Total page faults : %d." % (page_faults)
+class optimalMethod():
+    global randNumString
+    global cycles
+    
+    def run(self):
+    
+        pageFaultTbl = []
+        print('\n')
+        print(randNumString)
+        print('\n')
+        
+        for i in range(cycles):                      #outer loop
+            virtuMemoryFrames = [-1]*(i + 1)          #to maintain only i amount if frames
+            currPage = 0      
+            pageFaults = 0                     
+            
+            
+
+            for i in range(len(randNumString)):       #middle loop
+                
+                foundFlag = 0                       #flag to exit while loop
+                for j in range(len(virtuMemoryFrames)):
+                    if (virtuMemoryFrames[j] == randNumString[i]):
+                        foundFlag = 1
+                        break
+
+                if foundFlag == 0:
+                    faulted = False
+                    newFrame = -1
+
+                    for k in range(len(virtuMemoryFrames)):
+                        if virtuMemoryFrames[k] == -1:
+                            faulted = True
+                            newFrame = k
+
+                    if not faulted:   # find next use farthest page used in future
+                        
+                        furthest1 = 0
+                        farFutureHldr = -1
+                        for q in range(len(virtuMemoryFrames)):
+                            
+                            if virtuMemoryFrames[q] != -1:
+                                found = False
+                                for m in range(i, len(randNumString) - 1):
+                                    if randNumString[m] == virtuMemoryFrames[q]:
+                                        found = True
+                                        if m > furthest1:
+                                            furthest1 = m
+                                            farFutureHldr = q
+                                        break
+
+                                if not found:
+                                    farFutureHldr = q
+                                    break
+
+                        faulted = True
+                        newFrame = farFutureHldr
+
+                    pageFaults += 1
+                    virtuMemoryFrames[newFrame] = randNumString[i]
+                    
+            pageFaultTbl.append(pageFaults)          
+            
+        print('Optimal Page Faults')
+        print(pageFaultTbl)
 
 
 

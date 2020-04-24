@@ -2,12 +2,12 @@ import osproject2
 
 myPrj = osproject2.StringArray()
 myPrj2 = osproject2.fifoMethod()
-
+myPrj3 = osproject2.optimalMethod()
 
 output = {}
 output2 = {}
+output3 = {}
 
 output = myPrj.run()
 output2 = myPrj2.run()
-
-print("here i am MAIN")
+output3 = myPrj3.run()
